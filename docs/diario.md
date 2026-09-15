@@ -22,9 +22,18 @@ com a IA. Cole só os pedidos que você enviou.
 ## Primeiro contato: revisão sem editar
 
 - As três melhorias que a IA sugeriu, em uma linha cada:
+Criar uma forma melhor de buscar astronautas e voos, evitando retornar posições com valor -1.
+Criar um método para verificar se o voo está planejado, evitando repetir essa condição.
+Separar melhor a lógica usada para listar as informações.
+
 - A que escolhi e por quê:
+Escolhi criar o método para verificar se o voo está planejado porque era uma alteração simples e diminuía a repetição no código.
+
 - O que mudou no código, e se os seis testes continuaram passando:
+Foi criado o método estaPlanejado() na classe Voo e as verificações repetidas foram substituídas por ele. Os seis testes da Parte 1 continuaram passando.
+
 - O que entendi que não sabia antes:
+Entendi que um método pode esconder uma verificação que é usada várias vezes.
 
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 

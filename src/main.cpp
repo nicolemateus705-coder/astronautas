@@ -81,6 +81,10 @@ public:
         return estado;
     }
 
+    bool estaPlanejado() {
+        return estado == "planejado";
+    }
+
     int getQuantidadeAstronautas() {
         return cpfs.size();
     }
@@ -191,7 +195,7 @@ public:
             return;
         }
 
-        if (voos[posicaoVoo].getEstado() != "planejado") {
+        if (!voos[posicaoVoo].estaPlanejado()) {
             cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
@@ -225,7 +229,7 @@ public:
             return;
         }
 
-        if (voos[posicaoVoo].getEstado() != "planejado") {
+        if (!voos[posicaoVoo].estaPlanejado()) {
             cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
@@ -248,7 +252,7 @@ public:
             return;
         }
 
-        if (voos[posicaoVoo].getEstado() != "planejado") {
+        if (!voos[posicaoVoo].estaPlanejado()) {
             cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
@@ -352,7 +356,7 @@ public:
 
             for (int j = 0; j < voos.size(); j++) {
                 if (voos[j].temAstronauta(astronautas[i].getCpf())
-                    && voos[j].getEstado() != "planejado") {
+                    && !voos[j].estaPlanejado()) {
 
                     cout << " " << voos[j].getCodigo();
                     encontrouVoo = true;
