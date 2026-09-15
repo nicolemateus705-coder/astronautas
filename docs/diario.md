@@ -38,10 +38,25 @@ Entendi que um método pode esconder uma verificação que é usada várias veze
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 
 - Primeira mensagem (o pedido do plano):
+
+Leia @AGENTS.md, @ENUNCIADO.md, @src/main.cpp e os testes da Missão 1 em @testes/missao1.
+A Parte 1 já está pronta e os seis testes da Parte 1 estão passando.
+Agora quero implementar a Missão 1, que adiciona os comandos LISTAR_ASTRONAUTAS e HISTORICO.
+Entenda as regras e as saídas esperadas a partir do enunciado e dos testes.
+Nesta primeira mensagem, NÃO altere nenhum arquivo.
+Explique como você pretende implementar a Missão 1, quais métodos e arquivos serão criados ou alterados e por quê.
+Antes de editar, me mostre o plano.
+
 - O plano que a IA apresentou, resumido:
-- Mudei algo no plano antes de liberar?
+Criar um método para verificar em qual voo em curso o astronauta está. Depois, criar os métodos para listar os astronautas separados entre disponíveis, em voo e mortos, e para mostrar o histórico de voos de um astronauta. Por fim, adicionar os dois novos comandos ao main.
+
+- Mudei algo no plano antes de liberar? Não
+
 - Resultado de `testar.sh missao1` e de `testar.sh parte1`:
+Não usei o testar.sh. Rodei os testes manualmente no PowerShell. Os dois testes da Missão 1 e os seis testes da Parte 1 passaram.
+
 - Precisei refazer? O que mudou no pedido:
+Não precisei refazer. O primeiro pedido funcionou.
 
 ## Missão 2: SALVAR e CARREGAR
 
