@@ -437,6 +437,18 @@ public:
     }
 }
 
+    void contarDisponiveis() {
+        int disponiveis = 0;
+
+        for (int i = 0; i < astronautas.size(); i++) {
+            if (astronautas[i].estaVivo() && astronautas[i].estaDisponivel()) {
+                disponiveis++;
+            }
+        }
+
+        cout << "ASTRONAUTAS DISPONIVEIS: " << disponiveis << endl;
+    }
+
         void listarVoos() {
         cout << "LISTA DE VOOS" << endl;
 
@@ -539,7 +551,8 @@ public:
             return;
         }
 
-        cout << "HISTORICO DE " << astronautas[posicaoAstronauta].getNome() << endl;
+        cout << "HISTORICO DE " << astronautas[posicaoAstronauta].getCpf()
+        << " " << astronautas[posicaoAstronauta].getNome() << endl;
 
         bool encontrou = false;
 
@@ -775,6 +788,8 @@ int main() {
             agencia.carregar(arquivo);
         } else if (comando == "RELATORIO") {
             agencia.relatorio();
+        } else if (comando == "CONTAR_DISPONIVEIS") {
+            agencia.contarDisponiveis();
         } else {
             cout << "ERRO: comando desconhecido " << comando << endl;
         }
