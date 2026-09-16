@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -129,6 +130,10 @@ public:
     void finalizar() {
         estado = "finalizado com sucesso";
     }
+
+    void setEstado(string novoEstado) {
+        estado = novoEstado;
+    }
 };
 
 class Agencia {
@@ -165,6 +170,38 @@ int buscarVoo(int codigo) {
         }
 
         return -1;
+    }
+
+    int codigoEstado(string estado) {
+        if (estado == "em curso") {
+            return 1;
+        }
+
+        if (estado == "finalizado com sucesso") {
+            return 2;
+        }
+
+        if (estado == "finalizado com explosao") {
+            return 3;
+        }
+
+        return 0;
+    }
+
+    string nomeEstado(int codigo) {
+        if (codigo == 1) {
+            return "em curso";
+        }
+
+        if (codigo == 2) {
+            return "finalizado com sucesso";
+        }
+
+        if (codigo == 3) {
+            return "finalizado com explosao";
+        }
+
+        return "planejado";
     }
 
 public:
@@ -269,7 +306,7 @@ public:
         }
 
         if (voos[posicaoVoo].getQuantidadeAstronautas() == 0) {
-            cout << "ERRO: voo " << codigo << " sem astronautas" << endl;
+            cout << "ERRO: voo " << codigo << " nao possui astronautas" << endl;
             return;
         }
 
@@ -388,6 +425,8 @@ public:
 }
 
         void listarVoos() {
+        cout << "LISTA DE VOOS" << endl;
+
         string estados[4] = {
             "planejado",
             "em curso",
@@ -396,7 +435,7 @@ public:
         };
 
         for (int e = 0; e < 4; e++) {
-            cout << "VOOS " << estados[e] << endl;
+            cout << "== " << estados[e] << " ==" << endl;
 
             bool encontrou = false;
 
@@ -404,7 +443,7 @@ public:
                 if (voos[i].getEstado() == estados[e]) {
                     encontrou = true;
 
-                    cout << voos[i].getCodigo() << ": ";
+                    cout << "Voo " << voos[i].getCodigo() << ": ";
 
                     if (voos[i].getQuantidadeAstronautas() == 0) {
                         cout << "sem astronautas";
@@ -504,6 +543,100 @@ public:
         }
     }
 
+    void salvar(string arquivo) {
+        ofstream saida(arquivo);
+
+        if (!saida) {
+            cout << "ERRO: nao foi possivel salvar em " << arquivo << endl;
+            return;
+        }
+
+        saida << "AGENCIA" << endl;
+        saida << "ASTRONAUTAS " << astronautas.size() << endl;
+
+        for (int i = 0; i < astronautas.size(); i++) {
+            saida << astronautas[i].getCpf() << " "
+                  << astronautas[i].getIdade() << " "
+                  << (astronautas[i].estaVivo() ? 1 : 0) << " "
+                  << (astronautas[i].estaDisponivel() ? 1 : 0) << " "
+                  << astronautas[i].getNome() << endl;
+        }
+
+        saida << "VOOS " << voos.size() << endl;
+
+        for (int i = 0; i < voos.size(); i++) {
+            saida << voos[i].getCodigo() << " "
+                  << codigoEstado(voos[i].getEstado()) << " "
+                  << voos[i].getQuantidadeAstronautas();
+
+            for (int j = 0; j < voos[i].getQuantidadeAstronautas(); j++) {
+                saida << " " << voos[i].getCpf(j);
+            }
+
+            saida << endl;
+        }
+
+        cout << "OK: dados salvos em " << arquivo << endl;
+    }
+
+    void carregar(string arquivo) {
+        ifstream entrada(arquivo);
+
+        if (!entrada) {
+            cout << "ERRO: nao foi possivel carregar de " << arquivo << endl;
+            return;
+        }
+
+        astronautas.clear();
+        voos.clear();
+
+        string marcador;
+        int quantidade;
+
+        entrada >> marcador;
+        entrada >> marcador >> quantidade;
+
+        for (int i = 0; i < quantidade; i++) {
+            string cpf, nome;
+            int idade, vivo, disponivel;
+
+            entrada >> cpf >> idade >> vivo >> disponivel;
+            getline(entrada >> ws, nome);
+
+            Astronauta astronauta(cpf, nome, idade);
+
+            if (vivo == 0) {
+                astronauta.morrer();
+            } else if (disponivel == 0) {
+                astronauta.embarcar();
+            }
+
+            astronautas.push_back(astronauta);
+        }
+
+        entrada >> marcador >> quantidade;
+
+        for (int i = 0; i < quantidade; i++) {
+            int codigo, estado, tripulantes;
+
+            entrada >> codigo >> estado >> tripulantes;
+
+            Voo voo(codigo);
+            voo.setEstado(nomeEstado(estado));
+
+            for (int j = 0; j < tripulantes; j++) {
+                string cpf;
+
+                entrada >> cpf;
+                voo.adicionarAstronauta(cpf);
+            }
+
+            voos.push_back(voo);
+        }
+
+        cout << "OK: dados carregados de " << arquivo << endl;
+    }
+
 };
 
 
@@ -556,6 +689,14 @@ int main() {
             string cpf;
             cin >> cpf;
             agencia.historico(cpf);
+        } else if (comando == "SALVAR") {
+            string arquivo;
+            cin >> arquivo;
+            agencia.salvar(arquivo);
+        } else if (comando == "CARREGAR") {
+            string arquivo;
+            cin >> arquivo;
+            agencia.carregar(arquivo);
         } else {
             cout << "ERRO: comando desconhecido " << comando << endl;
         }
