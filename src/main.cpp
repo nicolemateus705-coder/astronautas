@@ -5,10 +5,6 @@
 
 using namespace std;
 
-// Parte 1: escreva aqui as classes Astronauta, Voo e Agencia.
-// Depois, em cada comando, apague a linha do cout com "TODO" e descomente
-// a chamada ao metodo da Agencia.
-
 class Astronauta {
 private:
     string cpf;
